@@ -6,6 +6,7 @@ First, you must create a `.env` file with a Telegram Bot API key (see `example.e
 
 Once configured:
 ```
+$ npm install
 $ npm start
 ```
 
