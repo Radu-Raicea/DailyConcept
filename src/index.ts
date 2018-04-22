@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { createTable } from './database'
+import { createTable, addConcept, removeConcept, listConcepts } from './database'
 import * as TelegramBot from 'node-telegram-bot-api'
 
 Promise.resolve()
@@ -18,18 +18,24 @@ telegram.on('text', message => {
   let command = /^\/\S+/
   switch (text.match(command)[0]){
     case '/today':
-      telegram.sendMessage(message.chat.id, 'Called /today')
+      telegram.sendMessage(message.chat.id, 'Called /today');
       break;
     case '/add':
-      telegram.sendMessage(message.chat.id, 'Called /add')
+      addConcept(text.replace('/add ', ''))
+        .then(() => telegram.sendMessage(message.chat.id, 'Concept added!'))
+        .catch(err => telegram.sendMessage(message.chat.id, err.toString()))
       break;
     case '/remove':
-      telegram.sendMessage(message.chat.id, 'Called /remove')
+      removeConcept(text.replace('/remove ', ''))
+        .then(() => telegram.sendMessage(message.chat.id, 'Concept removed!'))
+        .catch(err => telegram.sendMessage(message.chat.id, err.toString()))
       break;
     case '/list':
-      telegram.sendMessage(message.chat.id, 'Called /list')
+      listConcepts()
+        .then(concepts => telegram.sendMessage(message.chat.id, concepts.join('\n')))
+        .catch(err => telegram.sendMessage(message.chat.id, err.toString()))
       break;
     default:
-      telegram.sendMessage(message.chat.id, 'Unrecognized command!')
+      telegram.sendMessage(message.chat.id, 'Unrecognized command!');
   }
 })
