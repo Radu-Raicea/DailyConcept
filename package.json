@@ -1,0 +1,37 @@
+{
+  "name": "dailyconcept",
+  "version": "1.0.0",
+  "description": "Telegram bot that suggests a concept to learn today from a pre-defined list of concepts",
+  "main": "lib/index",
+  "types": "lib/index",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Radu-Raicea/DailyConcept.git"
+  },
+  "author": "Radu-Raicea",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Radu-Raicea/DailyConcept/issues"
+  },
+  "homepage": "https://github.com/Radu-Raicea/DailyConcept#readme",
+  "dependencies": {
+    "@types/node": "^9.6.6",
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "es6-promise": "^4.2.4",
+    "express": "^4.16.3",
+    "node-telegram-bot-api": "^0.30.0",
+    "request": "^2.85.0",
+    "sqlite3": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.3",
+    "ts-node": "^6.0.0",
+    "typescript": "^2.8.3"
+  }
+}
