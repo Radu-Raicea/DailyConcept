@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { createTable, addConcept, removeConcept, listConcepts } from './database'
+import { createTable, addConcept, removeConcept, listConcepts, getConcept } from './database'
 import * as TelegramBot from 'node-telegram-bot-api'
 
 Promise.resolve()
@@ -18,7 +18,9 @@ telegram.on('text', message => {
   let command = /^\/\S+/
   switch (text.match(command)[0]){
     case '/today':
-      telegram.sendMessage(message.chat.id, 'Called /today');
+      getConcept()
+        .then(concept => telegram.sendMessage(message.chat.id, `Here's the concept you should learn today: ${concept}.`))
+        .catch(err => telegram.sendMessage(message.chat.id, err.toString()))
       break;
     case '/add':
       addConcept(text.replace('/add ', ''))
@@ -32,7 +34,7 @@ telegram.on('text', message => {
       break;
     case '/list':
       listConcepts()
-        .then(concepts => telegram.sendMessage(message.chat.id, concepts.join('\n')))
+        .then(concepts => telegram.sendMessage(message.chat.id, `List of concepts:\n${concepts.join('\n')}`))
         .catch(err => telegram.sendMessage(message.chat.id, err.toString()))
       break;
     default:

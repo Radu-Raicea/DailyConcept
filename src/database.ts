@@ -25,14 +25,23 @@ export let removeConcept = (concept: string): Promise<void> => {
 export let listConcepts = (): Promise<string[]> => {
   return new Promise((resolve, reject) => {
     let rows: string[] = [];
-    db.each(`SELECT rowid AS id, name AS concept FROM concepts`, (err, row) => {
+    db.each('SELECT name FROM concepts', (err, row) => {
       if (err) reject(err);
-      else rows.push(row.concept);
+      else rows.push(row.name);
     }, (err, numRows) => {
       if (err) reject(err);
+      else if (numRows === 0) reject(new Error('There are no concepts in the database.'));
       else resolve(rows);
     });
   });
 };
 
-export let getConcept = () => 'concept';
+export let getConcept = (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT name FROM concepts ORDER BY RANDOM()', (err, row) => {
+      if (err) reject(err);
+      else if (row) resolve(row.name);
+      else reject(new Error('There are no concepts in the database.'));
+    });
+  });
+};
